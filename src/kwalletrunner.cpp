@@ -48,6 +48,14 @@ KWalletRunner::~KWalletRunner()
 
 void KWalletRunner::match(Plasma::RunnerContext &context)
 {
+    // Ensure that we have a valid KWallet instance.
+    if (!m_wallet) {
+        return;
+    }
+
+    // Lock the mutex to ensure we do not end up with multiple threads accessing m_wallet.
+    m_mutexLock.lock();
+
     // Make sure command starts with "kwallet"
     if (context.isValid() && context.query().startsWith(QLatin1String("kwallet "), Qt::CaseInsensitive)) {
         
@@ -102,6 +110,9 @@ void KWalletRunner::match(Plasma::RunnerContext &context)
             context.addMatch(newAction);
         }
     }
+
+    // Unlock the mutex.
+    m_mutexLock.unlock();
 }
 
 

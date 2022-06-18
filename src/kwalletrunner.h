@@ -22,6 +22,7 @@
 
 #include <KRunner/AbstractRunner>
 #include <KWallet/KWallet>
+#include <QMutex>
 
 using KWallet::Wallet;
 
@@ -41,6 +42,8 @@ class KWalletRunner : public Plasma::AbstractRunner
     
   private:
     Wallet *m_wallet; 
+
+    QMutex m_mutexLock;
 };
 
 #endif /* KWALLETRUNNER_H */
